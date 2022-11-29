@@ -9,11 +9,15 @@ import com.chaquo.python.Python
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jsoup.Connection
+import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
 
 class MainViewModel : ViewModel() {
 
-    fun logar(rg: String, rgDig: String, estado: String, cpf: String, senha: String, captcha: String) {
+    private val _statusCode = MutableLiveData(0)
+    val statusCode: LiveData<Int> = _statusCode
+
+    fun logar(rg: String, rgDig: String, estado: String, cpf: String, email: String, senha: String, captcha: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
@@ -37,7 +41,7 @@ class MainViewModel : ViewModel() {
                 formData.put("usuLoginRgDigit", rgDig)
                 formData.put("usuLoginRgState", estado)
                 formData.put("usuLoginCpf", cpf)
-                formData.put("usuLogin", "")
+                formData.put("usuLogin", email)
                 formData.put("_usuSenha", "")
                 formData.put("usuSenha", senha)
                 formData.put("g-recaptcha-response", captcha)
@@ -49,11 +53,22 @@ class MainViewModel : ViewModel() {
                     .userAgent(USER_AGENT)
                     .execute()
 
-                Log.d("sptrans", homePage.parse().html())
-            }catch (e:Exception) {
-                Log.e("sptrans", e.message.toString())
+                val cartoes = Jsoup.connect("https://scapub.sbe.sptrans.com.br/sa/cartoes/listarCartoes.action")
+                    .cookies(cookies)
+                    .method(Connection.Method.GET)
+                    .userAgent(USER_AGENT)
+                    .execute()
+
+                _statusCode.postValue(cartoes.statusCode())
+
+                Log.d("sptrans", cartoes.parse().html())
+            }catch (e:HttpStatusException) {
+                _statusCode.postValue(e.statusCode)
+                Log.e("sptrans", e.statusCode.toString())
             }
+
         }
+
     }
 
 }

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.WindowManager
 import android.webkit.*
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -33,15 +34,31 @@ class LoginActivity : AppCompatActivity() {
             val rg = binding.editRg.text.toString()
             val digito = binding.editDigito.text.toString()
             val cpf = binding.editCpf.text.toString()
+            val email = binding.editEmail.text.toString()
             val senha = binding.editSenha.text.toString()
 
-
-            mainViewModel.logar(rg, digito, "SP", cpf, senha, captcha)
-
-
+            if(email.isNotBlank() && (rg.isNotBlank() || digito.isNotBlank() || cpf.isNotBlank())){
+                Toast.makeText(this, "Informe seu RG e CPF ou e-mail.", Toast.LENGTH_LONG).show()
+            }else if(captcha.isBlank()){
+                Toast.makeText(this, "Resolva o Captcha!", Toast.LENGTH_LONG).show()
+            }else{
+                mainViewModel.logar(rg, digito, "SP", cpf, email, senha, captcha)
+            }
         }
 
-        binding.buttonCadastrar.setOnClickListener {
+        mainViewModel.statusCode.observe(this) {
+            if(it == 500){
+                Toast.makeText(this, "Verifique os campos...", Toast.LENGTH_LONG).show()
+            }else{
+                if(it != 0){
+                    startActivity(mainIntent)
+                    finish()
+                }
+            }
+        }
+
+        binding.checkCaptcha.setOnClickListener {
+            binding.checkCaptcha.isChecked = false
             getRecaptchaToken()
         }
 
@@ -75,6 +92,10 @@ class LoginActivity : AppCompatActivity() {
                     val token = message.substring(21)
                     recaptchaDialog.dismiss()
                     captcha = token
+                    if(token != ""){
+                        binding.checkCaptcha.isChecked = true
+                        binding.checkCaptcha.text = "Captcha Resolvido!"
+                    }
                 }
                 return super.onConsoleMessage(consoleMessage)
             }
@@ -94,7 +115,7 @@ class LoginActivity : AppCompatActivity() {
             null
         )
 
-         
+
     }
 
 }
