@@ -38,20 +38,9 @@ class ListaFragment : Fragment() {
 
         adapter.setLista(list)
 
-        if(!Python.isStarted()){
-            Python.start(AndroidPlatform(requireContext()))
-        }
-
-        binding.textView.setOnClickListener {
-            viewModel.getPythonHelloWorld()
-        }
-
-        viewModel.result.observe(viewLifecycleOwner) {
-            binding.textView.text = it
-        }
-
         return binding.root
     }
+
 
 
 }
