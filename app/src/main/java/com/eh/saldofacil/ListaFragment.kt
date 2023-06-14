@@ -1,10 +1,13 @@
 package com.eh.saldofacil
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chaquo.python.Python
@@ -16,7 +19,7 @@ import com.eh.saldofacil.model.Bilhete
 class ListaFragment : Fragment() {
 
     private lateinit var binding: FragmentListaBinding
-    private lateinit var viewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +27,6 @@ class ListaFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentListaBinding.inflate(layoutInflater, container, false)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         val adapter = BilheteAdapter()
         binding.recyclerBilhete.adapter = adapter
         binding.recyclerBilhete.layoutManager = LinearLayoutManager(context)
@@ -37,6 +39,12 @@ class ListaFragment : Fragment() {
         )
 
         adapter.setLista(list)
+
+        //mainViewModel.mostrarCartoes()
+
+        //mainViewModel.bilhetes.observe(viewLifecycleOwner) {
+            //Log.d("Opa", it.toString())
+        //}
 
         return binding.root
     }
