@@ -32,19 +32,18 @@ class ListaFragment : Fragment() {
         binding.recyclerBilhete.layoutManager = LinearLayoutManager(context)
         binding.recyclerBilhete.setHasFixedSize(true)
 
-        val list = listOf(
-            Bilhete("00000002", 50.0),
-            Bilhete("00000025", 64.0),
-            Bilhete("00000069", 10.0),
-        )
+        mainViewModel.cookies = activity?.intent?.getSerializableExtra("cookies") as HashMap<String, String>
 
-        adapter.setLista(list)
+        mainViewModel.mostrarCartoes()
 
-        //mainViewModel.mostrarCartoes()
+        mainViewModel.bilhetes.observe(viewLifecycleOwner){
+            if (it != null){
+                adapter.setLista(it)
+            }
+            Log.d("Opa", it.toString())
+        }
 
-        //mainViewModel.bilhetes.observe(viewLifecycleOwner) {
-            //Log.d("Opa", it.toString())
-        //}
+
 
         return binding.root
     }

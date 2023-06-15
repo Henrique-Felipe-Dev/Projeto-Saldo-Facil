@@ -21,12 +21,13 @@ class MainViewModel : ViewModel() {
     private val _statusCode = MutableLiveData(0)
     val statusCode: LiveData<Int> = _statusCode
 
-    private val _bilhetes = MutableLiveData<MutableList<Bilhete>>()
-    val bilhetes: LiveData<MutableList<Bilhete>> = _bilhetes
+    private val _bilhetes = MutableLiveData<List<Bilhete>>()
+    val bilhetes: LiveData<List<Bilhete>> = _bilhetes
 
     fun logar(rg: String, rgDig: String, estado: String, cpf: String, email: String, senha: String, captcha: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
+
                 val response = Jsoup.connect("https://scapub.sbe.sptrans.com.br/sa/acessoPublico/index.action")
                     .method(Connection.Method.GET)
                     .userAgent(USER_AGENT)
@@ -91,16 +92,20 @@ class MainViewModel : ViewModel() {
             val table = response.select("table")[2]
             val rows = table.select("tr")
 
+            val list = mutableListOf<Bilhete>()
+
             for(i in 1 until rows.size){
                 val row = rows[i]
                 val cols = row.select("td")
 
                 if(cols.text().isNotBlank()){
                     val dadosCartoes = cols.text().split(" ")
-                    _bilhetes.value?.add(Bilhete(dadosCartoes[0], 0.0))
+                    list.add(Bilhete(dadosCartoes[0], 0.0))
                 }
 
             }
+
+            _bilhetes.postValue(list)
 
         }
 
