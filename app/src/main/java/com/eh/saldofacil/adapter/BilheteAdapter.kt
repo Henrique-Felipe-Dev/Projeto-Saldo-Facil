@@ -34,9 +34,12 @@ class BilheteAdapter: Adapter<BilheteAdapter.BilheteViewHolder>() {
             showAlertSaldo(bilhete, holder.itemView.context)
         }
 
+        /*
         if(bilhete.situacao != "EMITIDO"){
             holder.binding.buttonSaldo.isEnabled = false
         }
+
+         */
 
     }
 
@@ -50,14 +53,28 @@ class BilheteAdapter: Adapter<BilheteAdapter.BilheteViewHolder>() {
     }
 
     fun showAlertSaldo(bilhete: Bilhete, context: Context) {
-        val alert = AlertDialog.Builder(context)
-            .setTitle("Saldo")
-            .setMessage("Número do Cartão: ${bilhete.numero}\nSeu saldo é: ${bilhete.saldo}")
-            .setPositiveButton("Ok") { _,_ ->
 
-            }
-            .create()
-            .show()
+        if(bilhete.situacao != "EMITIDO") {
+            AlertDialog.Builder(context)
+                .setTitle("Não foi possível consultar o saldo.")
+                .setMessage("MOTIVO: Cartão ${bilhete.situacao}")
+                .setPositiveButton("Ok") { _,_ ->
+
+                }
+                .create()
+                .show()
+        }else{
+            AlertDialog.Builder(context)
+                .setTitle("Saldo")
+                .setMessage("Número do Cartão: ${bilhete.numero}\nSeu saldo é: ${bilhete.saldo}")
+                .setPositiveButton("Ok") { _,_ ->
+
+                }
+                .create()
+                .show()
+        }
+
+
     }
 
 }

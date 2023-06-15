@@ -46,6 +46,4 @@ class ListaFragment : Fragment() {
         return binding.root
     }
 
-
-
 }
