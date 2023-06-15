@@ -34,6 +34,10 @@ class BilheteAdapter: Adapter<BilheteAdapter.BilheteViewHolder>() {
             showAlertSaldo(bilhete, holder.itemView.context)
         }
 
+        if(bilhete.situacao != "EMITIDO"){
+            holder.binding.buttonSaldo.isEnabled = false
+        }
+
     }
 
     override fun getItemCount(): Int {

@@ -43,8 +43,6 @@ class ListaFragment : Fragment() {
             Log.d("Opa", it.toString())
         }
 
-
-
         return binding.root
     }
 

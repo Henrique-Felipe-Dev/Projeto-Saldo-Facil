@@ -100,7 +100,32 @@ class MainViewModel : ViewModel() {
 
                 if(cols.text().isNotBlank()){
                     val dadosCartoes = cols.text().split(" ")
-                    list.add(Bilhete(dadosCartoes[0], 0.0))
+                    list.add(Bilhete(dadosCartoes[0], dadosCartoes[4].replace(" ", ""), ""))
+                }
+
+            }
+
+            for (i in 0 until list.size) {
+
+                if(list[i].situacao == "EMITIDO"){
+                    val formData = HashMap<String, String>()
+
+                    formData.put("idBatch", "")
+                    formData.put("logicalNumber", list[i].numero)
+                    formData.put("qtdeDias", "15")
+
+                    val extratoCartao = Jsoup.connect("https://scapub.sbe.sptrans.com.br/sa/meusCartoes/extratoCartao.action")
+                        .cookies(cookies)
+                        .data(formData)
+                        .method(Connection.Method.POST)
+                        .userAgent(USER_AGENT)
+                        .get()
+
+                    //Log.d("sptrans", extratoCartao.parse().html())
+
+                    val saldo = extratoCartao.select("td b:contains(R$)").text()
+
+                    list[i].saldo = saldo.toString()
                 }
 
             }
@@ -110,5 +135,7 @@ class MainViewModel : ViewModel() {
         }
 
     }
+
+
 
 }
