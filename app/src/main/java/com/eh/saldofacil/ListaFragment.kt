@@ -34,16 +34,41 @@ class ListaFragment : Fragment() {
 
         mainViewModel.cookies = activity?.intent?.getSerializableExtra("cookies") as HashMap<String, String>
 
+        carregando()
+
+        mainViewModel.mostrarUsuario()
+
         mainViewModel.mostrarCartoes()
+
+        mainViewModel.nomeSobrenome.observe(viewLifecycleOwner) {
+            if (it != "") {
+                binding.textUser.text = it
+            }else {
+                binding.textUser.text = "Bem vindo"
+            }
+        }
 
         mainViewModel.bilhetes.observe(viewLifecycleOwner){
             if (it != null){
                 adapter.setLista(it)
+                dadosCarregados()
             }
             Log.d("Opa", it.toString())
         }
 
         return binding.root
+    }
+
+    fun dadosCarregados() {
+        binding.progressBar3.visibility = View.GONE
+        binding.textUser.visibility = View.VISIBLE
+        binding.recyclerBilhete.visibility = View.VISIBLE
+    }
+
+    fun carregando() {
+        binding.progressBar3.visibility = View.VISIBLE
+        binding.textUser.visibility = View.GONE
+        binding.recyclerBilhete.visibility = View.GONE
     }
 
 }

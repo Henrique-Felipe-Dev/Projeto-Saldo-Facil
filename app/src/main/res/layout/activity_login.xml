@@ -36,6 +36,7 @@
             android:ems="10"
             android:hint="RG"
             android:inputType="number"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toStartOf="@+id/editDigito"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -48,6 +49,7 @@
             android:ems="10"
             android:hint="Dig"
             android:inputType="number"
+            android:minHeight="48dp"
             app:layout_constraintBottom_toBottomOf="@+id/editRg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/editRg" />
@@ -62,36 +64,10 @@
             android:ems="10"
             android:hint="CPF"
             android:inputType="number"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editRg" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="OU"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editCpf" />
-
-        <EditText
-            android:id="@+id/editEmail"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <EditText
             android:id="@+id/editSenha"
@@ -103,9 +79,10 @@
             android:ems="10"
             android:hint="Senha"
             android:inputType="textPassword"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/editCpf" />
 
         <Button
             android:id="@+id/buttonEntrar"
@@ -131,7 +108,7 @@
             android:id="@+id/checkCaptcha"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             android:clickable="false"
             android:text="Clique para resolver o Captcha"
             app:layout_constraintEnd_toEndOf="parent"

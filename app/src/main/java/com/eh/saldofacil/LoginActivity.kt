@@ -39,15 +39,15 @@ class LoginActivity : AppCompatActivity() {
             val rg = binding.editRg.text.toString()
             val digito = binding.editDigito.text.toString()
             val cpf = binding.editCpf.text.toString()
-            val email = binding.editEmail.text.toString()
+            //val email = binding.editEmail.text.toString()
             val senha = binding.editSenha.text.toString()
 
-            if(email.isNotBlank() && (rg.isNotBlank() || digito.isNotBlank() || cpf.isNotBlank())){
-                Toast.makeText(this, "Informe seu RG e CPF ou e-mail.", Toast.LENGTH_LONG).show()
+            if(rg.isBlank() || digito.isBlank() || cpf.isBlank()){
+                Toast.makeText(this, "Informe seu RG e CPF", Toast.LENGTH_LONG).show()
             }else if(captcha.isBlank()){
                 Toast.makeText(this, "Resolva o Captcha!", Toast.LENGTH_LONG).show()
             }else{
-                mainViewModel.logar(rg, digito, "SP", cpf, email, senha, captcha)
+                mainViewModel.logar(rg, digito, "SP", cpf, senha, captcha)
             }
         }
 

@@ -18,13 +18,16 @@ class MainViewModel : ViewModel() {
     private val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
     var cookies = HashMap<String, String>()
 
+    private val _nomeSobrenome = MutableLiveData<String>("")
+    val nomeSobrenome: LiveData<String> = _nomeSobrenome
+
     private val _statusCode = MutableLiveData(0)
     val statusCode: LiveData<Int> = _statusCode
 
     private val _bilhetes = MutableLiveData<List<Bilhete>>()
     val bilhetes: LiveData<List<Bilhete>> = _bilhetes
 
-    fun logar(rg: String, rgDig: String, estado: String, cpf: String, email: String, senha: String, captcha: String) {
+    fun logar(rg: String, rgDig: String, estado: String, cpf: String, senha: String, captcha: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
 
@@ -46,7 +49,7 @@ class MainViewModel : ViewModel() {
                 formData.put("usuLoginRgDigit", rgDig)
                 formData.put("usuLoginRgState", estado)
                 formData.put("usuLoginCpf", cpf)
-                formData.put("usuLogin", email)
+                formData.put("usuLogin", "")
                 formData.put("_usuSenha", "")
                 formData.put("usuSenha", senha)
                 formData.put("g-recaptcha-response", captcha)
@@ -79,6 +82,19 @@ class MainViewModel : ViewModel() {
 
     }
 
+    fun mostrarUsuario() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = Jsoup.connect("https://scapub.sbe.sptrans.com.br/sa/acessoPublico/alterarCadastroUsuario.action")
+                .cookies(cookies)
+                .userAgent(USER_AGENT)
+                .get()
+
+            val nome = response.select("input[name=usuarioPublico.user.primeiroNome]").`val`()
+            val sobreNome = response.select("input[name=usuarioPublico.user.sobrenome]").`val`()
+
+            _nomeSobrenome.postValue("Bem vindo, $nome $sobreNome")
+        }
+    }
     fun mostrarCartoes() {
 
         Log.d("Cookies", cookies.toString())
