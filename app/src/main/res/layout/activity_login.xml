@@ -19,7 +19,6 @@
             android:layout_marginEnd="32dp"
             android:text="Faça Login ou Cadastre-se"
             android:textAlignment="center"
-            android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
