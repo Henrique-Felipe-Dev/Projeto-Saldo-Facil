@@ -63,6 +63,15 @@ class BilheteAdapter: Adapter<BilheteAdapter.BilheteViewHolder>() {
                 }
                 .create()
                 .show()
+        }else if (bilhete.saldo.isBlank()) {
+            AlertDialog.Builder(context)
+                .setTitle("Não foi possível consultar o saldo.")
+                .setMessage("Bilhete antigo ou erro desconhecido...")
+                .setPositiveButton("Ok") { _,_ ->
+
+                }
+                .create()
+                .show()
         }else{
             AlertDialog.Builder(context)
                 .setTitle("Saldo")
@@ -73,7 +82,6 @@ class BilheteAdapter: Adapter<BilheteAdapter.BilheteViewHolder>() {
                 .create()
                 .show()
         }
-
 
     }
 

@@ -128,7 +128,7 @@ class MainViewModel : ViewModel() {
 
                     formData.put("idBatch", "")
                     formData.put("logicalNumber", list[i].numero)
-                    formData.put("qtdeDias", "15")
+                    formData.put("qtdeDias", "90")
 
                     val extratoCartao = Jsoup.connect("https://scapub.sbe.sptrans.com.br/sa/meusCartoes/extratoCartao.action")
                         .cookies(cookies)
@@ -151,7 +151,5 @@ class MainViewModel : ViewModel() {
         }
 
     }
-
-
 
 }
