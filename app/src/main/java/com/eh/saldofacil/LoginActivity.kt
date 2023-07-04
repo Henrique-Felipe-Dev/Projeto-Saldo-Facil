@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.eh.saldofacil.databinding.ActivityLoginBinding
+import com.eh.saldofacil.infra.SecurityPreferences
 import com.eh.saldofacil.utils.AssetReader
 import kotlinx.coroutines.launch
 import java.io.IOException
@@ -23,6 +24,7 @@ import java.io.IOException
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var securityPreferences: SecurityPreferences
     private val mainViewModel: MainViewModel by viewModels()
     private var captcha = ""
 
@@ -31,9 +33,16 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        securityPreferences = SecurityPreferences(this)
+
         val mainIntent = Intent(this, MainActivity::class.java)
 
         mainIntent.putExtra("cookies", mainViewModel.cookies)
+
+        binding.editRg.setText(securityPreferences.getString("rg"))
+        binding.editDigito.setText(securityPreferences.getString("digito"))
+        binding.editCpf.setText(securityPreferences.getString("cpf"))
+        binding.checkLembrarRgCpf.isChecked = securityPreferences.getBoolean("lembrar")
 
         binding.buttonEntrar.setOnClickListener {
 
@@ -63,6 +72,16 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Verifique os campos...", Toast.LENGTH_LONG).show()
             }else{
                 if(it != 0){
+
+                    if(binding.checkLembrarRgCpf.isChecked) {
+                        securityPreferences.storeString("rg", binding.editRg.text.toString())
+                        securityPreferences.storeString("digito", binding.editDigito.text.toString())
+                        securityPreferences.storeString("cpf", binding.editCpf.text.toString())
+                        securityPreferences.storeBoolean("lembrar", binding.checkLembrarRgCpf.isChecked)
+                    }else{
+                        securityPreferences.clear()
+                    }
+
                     startActivity(mainIntent)
                     finish()
                 }
